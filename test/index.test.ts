@@ -1,11 +1,11 @@
 import http from 'http';
 import CancelableAPI from '../lib/index';
 
-const API = new CancelableAPI('http://localhost:4000');
-
 describe('Request test', () => {
+  let API: CancelableAPI;
   let server: http.Server;
   beforeAll(() => {
+    API = new CancelableAPI('http://localhost:4000');
     return new Promise((resolve) => {
       server = http.createServer((req, res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,6 +17,7 @@ describe('Request test', () => {
   });
 
   afterAll(() => {
+    API.dispose();
     return new Promise((resolve) => {
       server.close(resolve);
     });

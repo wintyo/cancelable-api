@@ -7,6 +7,7 @@ const APIs: Array<CancelableAPI> = [];
 class CancelableAPI {
   private apiRoot = '';
   private pCancelableList: Array<PCancelable<any>> = [];
+  private isDispose = false;
 
   constructor(apiRoot = '') {
     this.apiRoot = apiRoot;
@@ -17,7 +18,16 @@ class CancelableAPI {
     this.apiRoot = apiRoot;
   }
 
+  /**
+   * Request by axios
+   * @param requestConfig - config for axios
+   * @param callbacks - callbacks
+   */
   request<T = any>(requestConfig: AxiosRequestConfig, callbacks: IRequestCallbacks = {}): PCancelable<AxiosResponse<T>> {
+    if (this.isDispose) {
+      throw new Error('already diposed!');
+    }
+
     const pCancelable = request<T>({
       baseURL: this.apiRoot,
       ...requestConfig,
@@ -34,6 +44,9 @@ class CancelableAPI {
     return pCancelable;
   }
 
+  /**
+   * Cancel all requesting called the instance.
+   */
   cancelAll() {
     this.pCancelableList.forEach((pCancelable) => {
       pCancelable.cancel();
@@ -42,6 +55,27 @@ class CancelableAPI {
     this.pCancelableList = [];
   }
 
+  /**
+   * Dispose the instance
+   */
+  dispose() {
+    if (this.isDispose) {
+      console.warn('already diposed!');
+      return;
+    }
+    this.cancelAll();
+    console.log(APIs);
+    const index = APIs.indexOf(this);
+    if (index >= 0) {
+      APIs.splice(index, 1);
+    }
+    console.log(APIs);
+    this.isDispose = true;
+  }
+
+  /**
+   * Cancel all requesting called the class.
+   */
   static cancelAll() {
     APIs.forEach((API) => {
       API.cancelAll();
