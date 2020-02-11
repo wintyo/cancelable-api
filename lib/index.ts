@@ -23,7 +23,7 @@ class CancelableAPI {
    * @param requestConfig - config for axios
    * @param callbacks - callbacks
    */
-  request<T = any>(requestConfig: AxiosRequestConfig, callbacks: IRequestCallbacks = {}): PCancelable<AxiosResponse<T>> {
+  request<T = any>(requestConfig: AxiosRequestConfig, callbacks: IRequestCallbacks<T> = {}): PCancelable<AxiosResponse<T>> {
     if (this.isDispose) {
       throw new Error('already diposed!');
     }

@@ -1,46 +1,42 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import PCancelable from 'p-cancelable';
 
-export interface IRequestCallbacks {
+export interface IRequestCallbacks<T> {
   onRequestStart?: () => void;
-  onSuccess?: () => void;
-  onFailure?: () => void;
+  onSuccess?: (response: AxiosResponse<T>) => void;
+  onFailure?: (error: any) => void;
   onCancel?: () => void;
   onRequestEnd?: () => void;
 }
 
-export function request<T = any>(requestConfig: AxiosRequestConfig, callbacks: IRequestCallbacks = {}): PCancelable<AxiosResponse<T>> {
+export function request<T = any>(requestConfig: AxiosRequestConfig, callbacks: IRequestCallbacks<T> = {}): PCancelable<AxiosResponse<T>> {
   const source = axios.CancelToken.source();
 
-  return new PCancelable<AxiosResponse<T>>(async (resolve, reject, onCancel) => {
+  return new PCancelable<AxiosResponse<T>>((resolve, reject, onCancel) => {
     // request start
     callbacks.onRequestStart && callbacks.onRequestStart();
 
-    try {
-      const response = await axios.request<T>(requestConfig);
-      callbacks.onSuccess && callbacks.onSuccess();
-      resolve(response);
-    } catch(error) {
-      // no operation if the request has already canceled.
-      if (axios.isCancel(error)) {
-        return;
-      }
-      callbacks.onFailure && callbacks.onFailure();
-      reject({
-        isCancel: false,
-        error,
+    axios.request<T>(requestConfig)
+      .then((response) => {
+        callbacks.onSuccess && callbacks.onSuccess(response);
+        resolve(response);
+      })
+      .catch((error) => {
+        // no operation if the request has already canceled.
+        if (axios.isCancel(error)) {
+          return;
+        }
+        callbacks.onFailure && callbacks.onFailure(error);
+        reject(error);
+      })
+      .finally(() => {
+        callbacks.onRequestEnd && callbacks.onRequestEnd();
       });
-    } finally {
-      callbacks.onRequestEnd && callbacks.onRequestEnd();
-    }
 
     // if cancellation of request triggered
     onCancel(() => {
       callbacks.onCancel && callbacks.onCancel();
       source.cancel();
-      reject({
-        isCancel: true,
-      });
     });
   });
 }
