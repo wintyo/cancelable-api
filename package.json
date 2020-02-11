@@ -1,0 +1,42 @@
+{
+  "name": "@wintyo/cancelable-api",
+  "version": "0.0.0",
+  "description": "Cancelable API Request",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "xhr",
+    "http",
+    "ajax",
+    "promise"
+  ],
+  "homepage": "https://github.com/wintyo/cancelable-api",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/wintyo/cancelable-api"
+  },
+  "author": "wintyo <wintyo1024@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "p-cancelable": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "@types/node": "^13.7.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
