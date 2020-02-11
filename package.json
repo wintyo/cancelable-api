@@ -8,7 +8,7 @@
     "dist/*"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "webpack --config webpack.config.ts",
     "test": "jest"
   },
   "keywords": [
@@ -31,6 +31,7 @@
   "devDependencies": {
     "@types/jest": "^25.1.2",
     "@types/node": "^13.7.0",
+    "@types/webpack": "^4.41.6",
     "jest": "^25.1.0",
     "ts-jest": "^25.2.0",
     "ts-loader": "^6.2.1",
