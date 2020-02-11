@@ -64,12 +64,10 @@ class CancelableAPI {
       return;
     }
     this.cancelAll();
-    console.log(APIs);
     const index = APIs.indexOf(this);
     if (index >= 0) {
       APIs.splice(index, 1);
     }
-    console.log(APIs);
     this.isDispose = true;
   }
 
