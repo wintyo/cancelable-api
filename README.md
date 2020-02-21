@@ -50,7 +50,7 @@ const API = new CancelableAPI('http://localhost:3000/');
 #### constructor(apiRoot = '')
 apiRoot is used by baseURL of axios config.
 
-#### CancelableAPI.request(config, callbacks = {})
+#### < instance >.request(config, callbacks = {})
 HTTP request using axios.  
 see [axios request config](https://github.com/axios/axios#request-config).  
 
@@ -72,10 +72,10 @@ You can also handling the request using callbacks.
 
 The method return PCancelable, and you can cancel the request the PCancelable.
 
-#### CancelableAPI.cancelAll()
+#### < instance >.cancelAll()
 Cancel all requests called the instance.
 
-#### CancelableAPI.dispose()
+#### < instance >.dispose()
 If you do not need the instance, you can use dispose (like destructor).
 
 ### Static method
