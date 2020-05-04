@@ -12,6 +12,7 @@ export default {
     filename: '[name].js',
     library: 'CancelableAPI',
     libraryTarget: 'umd',
+    globalObject: 'this',
   },
   externals: [
     'axios',
